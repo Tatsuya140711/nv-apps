@@ -1,0 +1,3 @@
+Dato curioso antes de empezar: Todas las aplicaciones son para TinyCore Linux y derivados Nanolinux (Descontinuado) y Novatitrox TC
+
+Este repositorio es para aplicaciones escritas en .py y .sh, los archivos .tcz no pueden ser ejecutados por otros sistemas como Slackware, Alpine, etc... por lo que aqui estan los codigos de aplicaciones utiles, son utiles si estas desarrollando una distro y quieres una serie de aplicaciones pre-instaladas.
