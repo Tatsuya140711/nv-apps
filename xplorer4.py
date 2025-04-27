@@ -100,90 +100,91 @@ class ExploradorNV(tk.Tk):
             self.file_icon.put("black", to=(0, 0, 15, 15))
             self.drive_icon = tk.PhotoImage(width=16, height=16)
             self.drive_icon.put("orange", to=(0, 0, 15, 15))
-    
-    def create_widgets(self):
-        # Frame de búsqueda
-        search_frame = tk.Frame(self)
-        search_frame.pack(fill="x", padx=5, pady=5)
 
-        tk.Label(search_frame, text="Buscar:").pack(side="left")
-        tk.Entry(search_frame, textvariable=self.search_term, width=40).pack(side="left", padx=5)
-        tk.Button(search_frame, text="Buscar", command=self.search_files).pack(side="left") 
-        tk.Button(search_frame, text="Limpiar", command=self.clear_search).pack(side="left", padx=5)
-        
-        # Barra superior
-        top_frame = tk.Frame(self)
-        top_frame.pack(fill="x", padx=5, pady=5)
-        
-        tk.Label(top_frame, text="Ruta:").pack(side="left")
-        self.path_label = tk.Label(top_frame, text="/mnt", relief="sunken", width=70, anchor="w")
-        self.path_label.pack(side="left", padx=5)
-        
-        tk.Button(top_frame, text="Volver", command=self.go_back).pack(side="left", padx=5)
-        
-        # Frame para el Treeview y scrollbars
-        list_frame = tk.Frame(self)
-        list_frame.pack(expand=True, fill="both", padx=5, pady=5)
-        
-        # Treeview para mostrar archivos en columnas
-        self.tree = ttk.Treeview(list_frame, columns=("Nombre", "Tipo", "Tamaño", "Modificado"), selectmode="browse")
-        self.tree.heading("#0", text="", anchor="w")
-        self.tree.heading("Nombre", text="Nombre", anchor="w")
-        self.tree.heading("Tipo", text="Tipo", anchor="w")
-        self.tree.heading("Tamaño", text="Tamaño", anchor="w")
-        self.tree.heading("Modificado", text="Modificado", anchor="w")
-        
-        # Configurar columnas
-        self.tree.column("#0", width=30, stretch=tk.NO)  # Espacio para el ícono
-        self.tree.column("Nombre", width=300, minwidth=150)
-        self.tree.column("Tipo", width=150, minwidth=100)
-        self.tree.column("Tamaño", width=100, minwidth=80)
-        self.tree.column("Modificado", width=150, minwidth=100)
-        
-        # Scrollbars
-        yscroll = tk.Scrollbar(list_frame, orient="vertical", command=self.tree.yview)
-        xscroll = tk.Scrollbar(list_frame, orient="horizontal", command=self.tree.xview)
-        self.tree.configure(yscrollcommand=yscroll.set, xscrollcommand=xscroll.set)
-        
-        # Grid layout
-        self.tree.grid(row=0, column=0, sticky="nsew")
-        yscroll.grid(row=0, column=1, sticky="ns")
-        xscroll.grid(row=1, column=0, sticky="ew")
-        
-        list_frame.grid_rowconfigure(0, weight=1)
-        list_frame.grid_columnconfigure(0, weight=1)
-        
-        # Botones
-        btn_frame = tk.Frame(self)
-        btn_frame.pack(fill="x", padx=5, pady=5)
-        
-        tk.Button(btn_frame, text="Abrir", command=self.open_item).pack(side="left", padx=2)
-        tk.Button(btn_frame, text="Renombrar", command=self.rename_item).pack(side="left", padx=2)
-        tk.Button(btn_frame, text="Crear Carpeta", command=self.create_folder).pack(side="left", padx=2)
-        tk.Button(btn_frame, text="Eliminar", command=self.delete_item).pack(side="left", padx=2)
-        tk.Button(btn_frame, text="Copiar", command=self.copy_item).pack(side="left", padx=2)
-        tk.Button(btn_frame, text="Mover", command=self.move_item).pack(side="left", padx=2)
-        tk.Button(btn_frame, text="Pegar", command=self.paste_item).pack(side="left", padx=2)
+def create_widgets(self):
+    # Fondo general
+    self.configure(bg="#f0f0f0")
 
-        # Eventos
-        self.tree.bind("<Double-Button-1>", lambda e: self.open_item())
-        self.tree.bind("<Return>", lambda e: self.open_item())
-        
-        # Menú contextual
-        self.menu = tk.Menu(self, tearoff=0)
-        self.menu.add_command(label="Abrir", command=self.open_item)
-        self.menu.add_command(label="Renombrar", command=self.rename_item)
-        self.menu.add_command(label="Eliminar", command=self.delete_item)
-        self.menu.add_separator()
-        self.menu.add_command(label="Copiar", command=self.copy_item)
-        self.menu.add_command(label="Mover", command=self.move_item)
-        self.menu.add_command(label="Pegar", command=self.paste_item)
-        self.menu.add_separator()
-        self.menu.add_command(label="Crear Carpeta", command=self.create_folder)
-        self.menu.add_separator()
-        self.menu.add_command(label="Copiar Ruta", command=self.copy_path)
-        
-        self.tree.bind("<Button-3>", self.show_context_menu)
+    # Frame de búsqueda
+    search_frame = tk.Frame(self, bg="#e6e6e6", bd=2, relief="groove")
+    search_frame.pack(fill="x", padx=5, pady=5)
+
+    tk.Label(search_frame, text="Buscar:", bg="#e6e6e6", font=("Arial", 10, "bold")).pack(side="left", padx=(5, 0))
+    tk.Entry(search_frame, textvariable=self.search_term, width=40, font=("Arial", 10)).pack(side="left", padx=5)
+    tk.Button(search_frame, text="Buscar", command=self.search_files, bg="#4caf50", fg="white", font=("Arial", 10, "bold")).pack(side="left", padx=5)
+    tk.Button(search_frame, text="Limpiar", command=self.clear_search, bg="#f44336", fg="white", font=("Arial", 10, "bold")).pack(side="left", padx=5)
+
+    # Barra superior
+    top_frame = tk.Frame(self, bg="#e6e6e6", bd=2, relief="groove")
+    top_frame.pack(fill="x", padx=5, pady=5)
+
+    tk.Label(top_frame, text="Ruta:", bg="#e6e6e6", font=("Arial", 10, "bold")).pack(side="left", padx=(5, 0))
+    self.path_label = tk.Label(top_frame, text="/mnt", relief="sunken", width=70, anchor="w", bg="white", font=("Arial", 10))
+    self.path_label.pack(side="left", padx=5)
+    tk.Button(top_frame, text="Volver", command=self.go_back, bg="#607d8b", fg="white", font=("Arial", 10, "bold")).pack(side="left", padx=5)
+
+    # Frame para el Treeview y scrollbars
+    list_frame = tk.Frame(self, bg="#f0f0f0")
+    list_frame.pack(expand=True, fill="both", padx=5, pady=5)
+
+    # Treeview para mostrar archivos en columnas
+    self.tree = ttk.Treeview(list_frame, columns=("Nombre", "Tipo", "Tamaño", "Modificado"), selectmode="browse", show="headings")
+    self.tree.heading("Nombre", text="Nombre", anchor="w")
+    self.tree.heading("Tipo", text="Tipo", anchor="w")
+    self.tree.heading("Tamaño", text="Tamaño", anchor="w")
+    self.tree.heading("Modificado", text="Modificado", anchor="w")
+
+    # Configurar columnas
+    self.tree.column("Nombre", width=300, minwidth=150, anchor="w")
+    self.tree.column("Tipo", width=150, minwidth=100, anchor="w")
+    self.tree.column("Tamaño", width=100, minwidth=80, anchor="w")
+    self.tree.column("Modificado", width=150, minwidth=100, anchor="w")
+
+    # Scrollbars
+    yscroll = ttk.Scrollbar(list_frame, orient="vertical", command=self.tree.yview)
+    xscroll = ttk.Scrollbar(list_frame, orient="horizontal", command=self.tree.xview)
+    self.tree.configure(yscrollcommand=yscroll.set, xscrollcommand=xscroll.set)
+
+    # Grid layout
+    self.tree.grid(row=0, column=0, sticky="nsew")
+    yscroll.grid(row=0, column=1, sticky="ns")
+    xscroll.grid(row=1, column=0, sticky="ew")
+
+    list_frame.grid_rowconfigure(0, weight=1)
+    list_frame.grid_columnconfigure(0, weight=1)
+
+    # Botones
+    btn_frame = tk.Frame(self, bg="#f0f0f0")
+    btn_frame.pack(fill="x", padx=5, pady=5)
+
+    button_style = {"bg": "#008cba", "fg": "white", "font": ("Arial", 10, "bold"), "padx": 5, "pady": 2}
+    tk.Button(btn_frame, text="Abrir", command=self.open_item, **button_style).pack(side="left", padx=2)
+    tk.Button(btn_frame, text="Renombrar", command=self.rename_item, **button_style).pack(side="left", padx=2)
+    tk.Button(btn_frame, text="Crear Carpeta", command=self.create_folder, **button_style).pack(side="left", padx=2)
+    tk.Button(btn_frame, text="Eliminar", command=self.delete_item, bg="#f44336", fg="white", font=("Arial", 10, "bold")).pack(side="left", padx=2)
+    tk.Button(btn_frame, text="Copiar", command=self.copy_item, **button_style).pack(side="left", padx=2)
+    tk.Button(btn_frame, text="Mover", command=self.move_item, **button_style).pack(side="left", padx=2)
+    tk.Button(btn_frame, text="Pegar", command=self.paste_item, bg="#4caf50", fg="white", font=("Arial", 10, "bold")).pack(side="left", padx=2)
+
+    # Eventos
+    self.tree.bind("<Double-Button-1>", lambda e: self.open_item())
+    self.tree.bind("<Return>", lambda e: self.open_item())
+
+    # Menú contextual
+    self.menu = tk.Menu(self, tearoff=0, bg="#ffffff", fg="#000000", font=("Arial", 10))
+    self.menu.add_command(label="Abrir", command=self.open_item)
+    self.menu.add_command(label="Renombrar", command=self.rename_item)
+    self.menu.add_command(label="Eliminar", command=self.delete_item)
+    self.menu.add_separator()
+    self.menu.add_command(label="Copiar", command=self.copy_item)
+    self.menu.add_command(label="Mover", command=self.move_item)
+    self.menu.add_command(label="Pegar", command=self.paste_item)
+    self.menu.add_separator()
+    self.menu.add_command(label="Crear Carpeta", command=self.create_folder)
+    self.menu.add_separator()
+    self.menu.add_command(label="Copiar Ruta", command=self.copy_path)
+
+    self.tree.bind("<Button-3>", self.show_context_menu)
     
     def create_folder(self):
         """Crea una nueva carpeta en el directorio actual"""
